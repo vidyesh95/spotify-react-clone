@@ -12,7 +12,7 @@ const PlayerContextProvider = (props) => {
     const seekBar = useRef()
 
     //default song is the first song in the array
-    const [track, setTrack] = useState(songsData[1])
+    const [track, setTrack] = useState(songsData[0])
     const [playStatus, setPlayStatus] = useState(false)
     const [time, setTime] = useState(
         {

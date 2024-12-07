@@ -79,8 +79,8 @@ const PlayerContextProvider = (props) => {
     );
 }
 
-// PlayerContextProvider.propTypes = {
-//     children: PropTypes.node.isRequired,
-// };
+PlayerContextProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export default PlayerContextProvider

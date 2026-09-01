@@ -63,6 +63,40 @@ const PlayerContextProvider = (props) => {
         audioRef.current.currentTime = ((event.nativeEvent.offsetX / seekBg.current.offsetWidth) * audioRef.current.duration)
     }
 
+    const [playlists, setPlaylists] = useState(() => {
+        try {
+            return JSON.parse(localStorage.getItem("playlists")) || []
+        } catch {
+            return []
+        }
+    })
+
+    useEffect(() => {
+        localStorage.setItem("playlists", JSON.stringify(playlists))
+    }, [playlists])
+
+    const createPlaylist = (name) => {
+        const id = Date.now().toString()
+        setPlaylists((prev) => [...prev, {id, name, songIds: []}])
+        return id
+    }
+
+    const addSongToPlaylist = (playlistId, songId) => {
+        setPlaylists((prev) => prev.map((p) =>
+            p.id === playlistId && !p.songIds.includes(songId)
+                ? {...p, songIds: [...p.songIds, songId]}
+                : p
+        ))
+    }
+
+    const removeSongFromPlaylist = (playlistId, songId) => {
+        setPlaylists((prev) => prev.map((p) =>
+            p.id === playlistId
+                ? {...p, songIds: p.songIds.filter((id) => id !== songId)}
+                : p
+        ))
+    }
+
     useEffect(() => {
         setTimeout(() => {
             audioRef.current.ontimeupdate = () => {
@@ -99,7 +133,11 @@ const PlayerContextProvider = (props) => {
         playWithId,
         previous,
         next,
-        seekSong
+        seekSong,
+        playlists,
+        createPlaylist,
+        addSongToPlaylist,
+        removeSongFromPlaylist
     };
 
     return (
